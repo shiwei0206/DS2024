@@ -2,7 +2,7 @@
 #include "listNode.h" //引入列表节点类
 
 template <typename T>
-class list // 列表模板类
+class List // 列表模板类
 {
 
 private:
@@ -23,7 +23,7 @@ public:
     // 构造函数
     List() { init(); }                      // 默认
     List(List<T> const &L);                 // 整体复制列表L
-    List(List<T> const &L, Rank r, Rank n); // 复制列表L中自第r项起的n项
+    List(List<T> const &L, Rank r, int n); // 复制列表L中自第r项起的n项
     List(ListNodePosi(T) p, int n);         // 复制列表中自位置p起的n项
     // 析构函数
     ~List(); // 释放(包含头，尾哨兵在内的)所有节点
@@ -67,3 +67,23 @@ public:
     template <typename VST>       // 操作器
     void traverse(VST &);         // 遍历，依次实施visit操作
 }; // List
+
+//3.3列表类内部方法init()
+template<typename T>void List<T>::init(){//列表初始化，在创建列表时统一调用
+    header = new ListNode<T>;//创建头哨兵节点
+    trailer = new ListNode<T>;//创建尾哨兵节点
+    hearder->succ = trailer;
+    header->pred = NULL;
+    trailer->pred = header;
+    trailer-> = NULL;
+    _size = 0;//记录规模
+}
+
+//3.4重载列表类的下标操作符
+template <typename T>//重载下标操作符，以通过秩直接访问列表节点（
+T& List<T>::operator[](Rank r) const {
+    ListNodePosi(T) p = first();
+    while(0<r--)
+        p = p->succ;
+    return p->date;
+}

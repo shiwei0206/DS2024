@@ -16,20 +16,18 @@ public:
     Complex(double r = 0, double i = 0) : real(r), imag(i) {}
     // 重载 <= 操作符
     bool operator<=(const Complex &other) const
-    {return (x <= other.x && y <= other.y);}
+    {return (real <= other.real && imag <= other.imag);}
     // 重载 > 操作符
     bool operator>(const Complex &other) const
-    {return (x > other.x || (x == other.x && y > other.y));}
+    {return (real > other.real || (real == other.real && imag > other.imag));}
     double modulus() const
     {return sqrt(real * real + imag * imag);}
     // 定义小于运算符，用于比较复数模（顺序）
     bool operator<(const Complex &other) const
     {return modulus() < other.modulus() || (modulus() == other.modulus() && real < other.real);}
     // 重载 != 运算符
-    double x;
-    double y;
     bool operator!=(const Complex &other) const
-    {return (x != other.x || y != other.y);}
+    {return (real != other.real || imag != other.imag);}
     // 重载==
     bool operator==(const Complex &other) const
     {return real == other.real && imag == other.imag;}
@@ -107,28 +105,26 @@ Vector<Complex> generateReverseOrderedVector(size_t n)
 // 记录排序时间并输出结果
 void measureSortingTime(const string &sortType, Vector<Complex> vec)
 {
-    clock_t start = clock();
+    auto start = chrono::high_resolution_clock::now();
     if (sortType == "起泡排序")
-    { vec.bubbleSort(0, vec.size());}
+    { vec.bubbleSort(0, vec.size()-1);}
     else if (sortType == "归并排序")
-    {vec.mergeSort(0, vec.size());}
-    clock_t end = clock();
-    double duration = (double(end - start) / CLOCKS_PER_SEC) * 100000; // 转换为微秒
-    // 输出排序结果和时间
-    cout << sortType << " 时间: " << duration << " ms" << endl;
+    {vec.mergeSort(0, vec.size()-1);}
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double, micro> duration_us = end - start;
+    cout << sortType<<" time: " << duration_us.count() << " us" << endl;
 }
 
 int main()
 {
     // 1. 生成一个无序的复数向量
-    int n = 100;
+    int n = 10;
     Vector<Complex> vec = generateRandomVector(n);
-    Vector<Complex> vec2 = vec;
     cout << "无序复数向量:\n";
     vec.traverse(print);
     cout << endl;
     // 测试置乱
-    vec.unsort(0, vec.size());
+    vec.unsort(0, vec.size()-1);
     cout << "置乱后的复数向量:\n";
     vec.traverse(print);cout << endl;
     // // 测试查找
@@ -146,12 +142,11 @@ int main()
     vec.remove(0); // 删除插入的元素
     cout << "删除元素后复数向量:\n";
     vec.traverse(print);cout << endl;
-
-    // // 唯一化复数向量
-    // vec.deduplicate();
-    // cout << "唯一化后的复数向量:\n";
-    // vec.traverse(print);
-    // cout << endl;
+    // 唯一化复数向量
+    vec.deduplicate();
+    cout << "唯一化后的复数向量:\n";
+    vec.traverse(print);
+    cout << endl;
 
     // 排序
     Sort1(vec);
@@ -164,8 +159,8 @@ int main()
     double m2 = 10.0; // 设置模的上界
     Vector<Complex> foundInRange = findInRange(vec, m1, m2);
     cout << "在区间 [" << m1 << ", " << m2 << "):的元素\n";
-    for (size_t i = 0; i < foundInRange.size(); ++i)
-    {cout << foundInRange[i] << " ";}cout << endl;
+    foundInRange.traverse(print);
+    cout<<endl;
 
     // 测试顺序
     cout << "顺序排序时间:" << endl;
@@ -177,10 +172,10 @@ int main()
     Vector<Complex> randomVec = generateRandomVector(n);
     measureSortingTime("起泡排序", randomVec);
     measureSortingTime("归并排序", randomVec);
-    // // // 测试逆序向量
-    // cout << "\n逆序排序时间" << endl;
-    // Vector<Complex> reverseVec = generateReverseOrderedVector(n);
-    // measureSortingTime("起泡排序", reverseVec);
-    // measureSortingTime("归并排序", reverseVec);
+    // // 测试逆序向量
+    cout << "\n逆序排序时间" << endl;
+    Vector<Complex> reverseVec = generateReverseOrderedVector(n);
+    measureSortingTime("起泡排序", reverseVec);
+    measureSortingTime("归并排序", reverseVec);
     return 0;
-}
+ }
