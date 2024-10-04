@@ -1,10 +1,12 @@
+
+
 typedef int Rank;		   // 秩
 #define DEFAULT_CAPACITY 3 // 默认的初始容量（实际应用中可设置为更大）
 
 template <typename T>
 class Vector
 { // 向量模板类
-protected:
+public:
 	Rank _size;
 	int _capacity;
 	T *_elem;									 // 规模、容量、数据区
@@ -133,9 +135,9 @@ void permute(Vector<T> &V) // 随机置乱向量，使各元素等概率出现�
 template <typename T>
 void Vector<T>::unsort(Rank lo, Rank hi) // 等概率随机置乱向量区间[lo,hi]
 {
-	T *V = _elem + lo;				   // 将子量——elem[lo,hi]视作另一向量v[0,hi-lo]
-	for (Rank i = hi - lo; i > 0; i--) // 自后向前
-		swap(V[i - 1], V[rand() % i]); // 将v[i-1]与v[0,i]中某一元素随机交换
+	T *V = _elem + lo;						// 将子量——elem[lo,hi]视作另一向量v[0,hi-lo]
+	for (Rank i = hi - lo; i > 0; i--)		// 自后向前
+		std::swap(V[i - 1], V[rand() % i]); // 将v[i-1]与v[0,i]中某一元素随机交换
 }
 
 // 2.9重载比较器以便比较对象指针
@@ -176,10 +178,10 @@ int Vector<T>::remove(Rank lo, Rank hi) // 删除区间[lo,hi]
 	if (lo == hi)
 		return 0; // 处于效率考虑，单独处理退化情况，比如remove(0,0)
 	while (hi < _size)
-		_elem[lo++] = _elem[hi]; //[hi,_size]顺次前移hi-lo个单元
-	_size = lo;					 // 更新规模，直接丢弃尾部[lo,_size=hi]区间
-	shrink();					 // 若有必要则缩容
-	return hi - lo;				 // 返回被删除元素数目
+		_elem[lo++] = _elem[hi++]; //[hi,_size]顺次前移hi-lo个单元
+	_size = lo;					   // 更新规模，直接丢弃尾部[lo,_size=hi]区间
+	shrink();					   // 若有必要则缩容
+	return hi - lo;				   // 返回被删除元素数目
 }
 
 // 2.13向量单元素删除接口remove()
@@ -346,18 +348,18 @@ void Vector<T>::sort(Rank lo, Rank hi) // 向量区间[lo,hi]排序
 	case 1:
 		bubbleSort(lo, hi);
 		break; // 起泡排序
-	case 2:
-		selectionSort(lo, hi);
-		break; // 选择排序
+	// case 2:
+	// 	selectionSort(lo, hi);
+	// 	break; // 选择排序
 	case 3:
 		mergeSort(lo, hi);
 		break; // 归并排序
-	case 4:
-		heapSort(lo, hi);
-		break; // 堆排序
-	default:
-		quickSort(lo, hi);
-		break; // 快速排序
+			   // case 4:
+			   // 	heapSort(lo, hi);
+			   // 	break; // 堆排序
+			   // default:
+			   // 	quickSort(lo, hi);
+			   // 	break; // 快速排序
 	}
 }
 
@@ -376,9 +378,9 @@ bool Vector<T>::bubble(Rank lo, Rank hi) // 一趟扫描交换
 	bool sorted = true; // 整体有序标志
 	while (++lo < hi)	// 自左向右，逐一检查各对相邻元素
 		if (_elem[lo - 1] > _elem[lo])
-		{									// 若逆序，则
-			sorted = false;					// 意味着尚未整体有序，并需要
-			swap(_elem[lo - 1], _elem[lo]); // 通过交换使局部有序
+		{										 // 若逆序，则
+			sorted = false;						 // 意味着尚未整体有序，并需要
+			std::swap(_elem[lo - 1], _elem[lo]); // 通过交换使局部有序
 		}
 	return sorted; // 返回有序标志
 }
@@ -413,5 +415,5 @@ void Vector<T>::merge(Rank lo, Rank mi, Rank hi)
 		if ((k < lc) && (!(j < lb) || (C[k] < B[j])))
 			A[i++] = C[k++];
 	}
-	delete[] B; // 释放临时空间B
+	// delete[] B; // 释放临时空间B
 } // 归并后得到完整的有序向量[lo,hi]
