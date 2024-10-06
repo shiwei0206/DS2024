@@ -413,5 +413,5 @@ void Vector<T>::merge(Rank lo, Rank mi, Rank hi)
 		if ((k < lc) && (!(j < lb) || (C[k] < B[j])))
 			A[i++] = C[k++];
 	}
-	// delete[] B; // 释放临时空间B
+	//delete[] B; // 释放临时空间B
 } // 归并后得到完整的有序向量[lo,hi]

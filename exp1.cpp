@@ -49,7 +49,7 @@ void Sort1(Vector<Complex> &arr)
 Vector<Complex> findInRange(const Vector<Complex> &arr, double m1, double m2)
 {
     Vector<Complex> result;
-    for (size_t i = 0; i < arr.size(); ++i)
+    for (int i = 0; i < arr.size(); ++i)
     {
         double modulus = arr[i].modulus();
         if (modulus >= m1 && modulus < m2)
@@ -62,11 +62,11 @@ void print(Complex &e)
 { cout << e.real << "+" << e.imag << "i  ";}
 
 // 随机生成乱序复数向量
-Vector<Complex> generateRandomVector(int size)
+Vector<Complex> generateRandomVector(int n)
 {
     Vector<Complex> vec;
     srand(time(0));
-    int uniqueSize = size - 2;
+    int uniqueSize = n - 2;
     Vector<Complex> vec1;
     for (int i = 0; i < uniqueSize; ++i)
     {
@@ -75,7 +75,7 @@ Vector<Complex> generateRandomVector(int size)
         vec1.insert(Complex(real, imag));
         vec.insert(Complex(real, imag)); // 插入到最终的向量中
     }
-    for (int i = uniqueSize; i < size; ++i)
+    for (int i = uniqueSize; i < n; ++i)
     {
         int randomIndex = rand() % uniqueSize; // 从唯一元素中随机选择
         vec.insert(vec1[randomIndex]);
@@ -83,18 +83,18 @@ Vector<Complex> generateRandomVector(int size)
     return vec;
 }
 
-Vector<Complex> generateOrderedVector(size_t n)
+Vector<Complex> generateOrderedVector(int n)
 {
     Vector<Complex> vec;
-    for (size_t i = 0; i < n; ++i)
+    for (int i = 0; i < n; ++i)
     {vec.insert(static_cast<double>(i), static_cast<double>(i));}
     return vec;
 }
 // 生成逆序复数向量
-Vector<Complex> generateReverseOrderedVector(size_t n)
+Vector<Complex> generateReverseOrderedVector(int n)
 {
     Vector<Complex> vec;
-    for (size_t i = n; i > 0; --i)
+    for (int i = n; i > 0; --i)
     { vec.insert(static_cast<double>(i), static_cast<double>(i));}
     return vec;
 }
