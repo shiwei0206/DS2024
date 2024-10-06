@@ -60,7 +60,6 @@ Vector<Complex> findInRange(const Vector<Complex> &arr, double m1, double m2)
 // 输出函数
 void print(Complex &e)
 { cout << e.real << "+" << e.imag << "i  ";}
-
 // 随机生成乱序复数向量
 Vector<Complex> generateRandomVector(int n)
 {
@@ -82,7 +81,6 @@ Vector<Complex> generateRandomVector(int n)
     }
     return vec;
 }
-
 Vector<Complex> generateOrderedVector(int n)
 {
     Vector<Complex> vec;
@@ -98,7 +96,6 @@ Vector<Complex> generateReverseOrderedVector(int n)
     { vec.insert(static_cast<double>(i), static_cast<double>(i));}
     return vec;
 }
-
 // 记录排序时间并输出结果
 void measureSortingTime(const string &sortType, Vector<Complex> vec)
 {
@@ -142,12 +139,10 @@ int main()
     vec.deduplicate();
     cout << "唯一化后的复数向量:\n";
     vec.traverse(print);cout << endl;
-
     // 排序
     Sort1(vec);
     cout << "排序后的复数向量:\n";
     vec.traverse(print);cout << endl;
-
     // 测试区间查找
     double m1 = 3.0;  // 设置模的下界
     double m2 = 8.0; // 设置模的上界
