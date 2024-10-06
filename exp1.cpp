@@ -1,9 +1,9 @@
 #include <iostream>
 #include <cmath>
-#include <ctime>
-#include <cstdlib>
-#include "unite\Vector\Vector.h"
-#include <algorithm>
+//#include <ctime>
+//#include <cstdlib>
+#include "unite/Vector/Vector.h"
+//#include <algorithm>
 #include <chrono>
 using namespace std;
 // 复数类定义
@@ -114,11 +114,10 @@ void measureSortingTime(const string &sortType, Vector<Complex> vec)
     chrono::duration<double, micro> duration_us = end - start;
     cout << sortType<<" time: " << duration_us.count() << " us" << endl;
 }
-
 int main()
 {
     // 1. 生成一个无序的复数向量
-    int n = 10;
+    int n = 1000;
     Vector<Complex> vec = generateRandomVector(n);
     cout << "无序复数向量:\n";
     vec.traverse(print);
@@ -156,7 +155,7 @@ int main()
 
     // 测试区间查找
     double m1 = 3.0;  // 设置模的下界
-    double m2 = 10.0; // 设置模的上界
+    double m2 = 8.0; // 设置模的上界
     Vector<Complex> foundInRange = findInRange(vec, m1, m2);
     cout << "在区间 [" << m1 << ", " << m2 << "):的元素\n";
     foundInRange.traverse(print);
@@ -172,10 +171,10 @@ int main()
     Vector<Complex> randomVec = generateRandomVector(n);
     measureSortingTime("起泡排序", randomVec);
     measureSortingTime("归并排序", randomVec);
-    // // 测试逆序向量
-    cout << "\n逆序排序时间" << endl;
-    Vector<Complex> reverseVec = generateReverseOrderedVector(n);
-    measureSortingTime("起泡排序", reverseVec);
-    measureSortingTime("归并排序", reverseVec);
-    return 0;
+    // // // 测试逆序向量
+    // cout << "\n逆序排序时间" << endl;
+    // Vector<Complex> reverseVec = generateReverseOrderedVector(n);
+    // measureSortingTime("起泡排序", reverseVec);
+    // measureSortingTime("归并排序", reverseVec);
+    // return 0;
  }
