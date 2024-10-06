@@ -1,9 +1,6 @@
 #include <iostream>
 #include <cmath>
-//#include <ctime>
-//#include <cstdlib>
 #include "unite/Vector/Vector.h"
-//#include <algorithm>
 #include <chrono>
 using namespace std;
 // 复数类定义
@@ -144,23 +141,19 @@ int main()
     // 唯一化复数向量
     vec.deduplicate();
     cout << "唯一化后的复数向量:\n";
-    vec.traverse(print);
-    cout << endl;
+    vec.traverse(print);cout << endl;
 
     // 排序
     Sort1(vec);
     cout << "排序后的复数向量:\n";
-    vec.traverse(print);
-    cout << endl;
+    vec.traverse(print);cout << endl;
 
     // 测试区间查找
     double m1 = 3.0;  // 设置模的下界
     double m2 = 8.0; // 设置模的上界
     Vector<Complex> foundInRange = findInRange(vec, m1, m2);
     cout << "在区间 [" << m1 << ", " << m2 << "):的元素\n";
-    foundInRange.traverse(print);
-    cout<<endl;
-
+    foundInRange.traverse(print);cout<<endl;
     // 测试顺序
     cout << "顺序排序时间:" << endl;
     Vector<Complex> orderedVec = generateOrderedVector(n);
