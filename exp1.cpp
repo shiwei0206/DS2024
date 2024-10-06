@@ -161,11 +161,11 @@ int main()
     Vector<Complex> randomVec1 = randomVec;
     measureSortingTime("起泡排序", randomVec);
     measureSortingTime("归并排序", randomVec1);
-    // // // 测试逆序向量
-    // cout << "\n逆序排序时间" << endl;
-    // Vector<Complex> reverseVec = generateReverseOrderedVector(n);
-    // Vector<Complex> reverseVec1 = reverseVec;
-    // measureSortingTime("起泡排序", reverseVec);
-    // measureSortingTime("归并排序", reverseVec);
+    // // 测试逆序向量
+    cout << "\n逆序排序时间" << endl;
+    Vector<Complex> reverseVec = generateReverseOrderedVector(n);
+    Vector<Complex> reverseVec1 = reverseVec;
+    measureSortingTime("起泡排序", reverseVec);
+    measureSortingTime("归并排序", reverseVec);
     return 0;
  }
