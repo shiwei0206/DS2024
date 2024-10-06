@@ -157,17 +157,20 @@ int main()
     // 测试顺序
     cout << "顺序排序时间:" << endl;
     Vector<Complex> orderedVec = generateOrderedVector(n);
+    Vector<Complex> orderedVec1 = orderedVec;
     measureSortingTime("起泡排序", orderedVec);
-    measureSortingTime("归并排序", orderedVec);
+    measureSortingTime("归并排序", orderedVec1);
     // 测试乱序向量
     cout << "\n乱序排序时间:" << endl;
     Vector<Complex> randomVec = generateRandomVector(n);
+    Vector<Complex> randomVec1 = randomVec;
     measureSortingTime("起泡排序", randomVec);
-    measureSortingTime("归并排序", randomVec);
+    measureSortingTime("归并排序", randomVec1);
     // // // 测试逆序向量
     // cout << "\n逆序排序时间" << endl;
     // Vector<Complex> reverseVec = generateReverseOrderedVector(n);
+    // Vector<Complex> reverseVec1 = reverseVec;
     // measureSortingTime("起泡排序", reverseVec);
     // measureSortingTime("归并排序", reverseVec);
-    // return 0;
+    return 0;
  }
