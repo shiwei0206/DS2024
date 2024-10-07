@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cmath>
-#include "E:\study\visual\DS2024\unite\Vector\Vector.h"
+#include "Vector.cpp"
 #include <chrono>
 using namespace std;
 // 复数类定义
@@ -31,20 +31,6 @@ public:
     friend ostream &operator<<(ostream &os, const Complex &c)
     {os << "(" << c.real << ", " << c.imag << ")";return os;}
 };
-// 复数模顺序排序
-void Sort1(Vector<Complex> &arr)
-{
-    int n = arr.size();
-    for (int i = 1; i < n; ++i)
-    {
-        Complex key = arr[i];
-        int j = i - 1;
-        // 按复数的模顺序排序，模相等时按实部排序
-        while (j >= 0 && key < arr[j])
-        {arr[j + 1] = arr[j];j = j - 1;}
-        arr[j + 1] = key;
-    }
-}
 // 区间查找算法
 Vector<Complex> findM(const Vector<Complex> &arr, double m1, double m2)
 {
@@ -101,7 +87,7 @@ int main()
     Vector<Complex> A1 = A;//乱序数组A1
     Vector<Complex> A2 = A;
     Vector<Complex> A3 = A; // 逆序数组A3
-    Sort1(A2);//顺序数组A2
+    A2.sort();//顺序数组A2
     for (int i=n-1; i>=0; i--)
     {
         A3[n-i-1] = A2[i];
@@ -114,12 +100,12 @@ int main()
     cout << "置乱后的复数向量:\n";
     A.traverse(print);cout << endl;
     // // 测试查找
-    Complex searchComplex(1, 2); // 用以查找的复数
-    Rank foundIndex = A.find(searchComplex);
-    if (foundIndex != -1)
-    { cout << "找到元素 " << searchComplex << " 在索引 " << foundIndex << endl;}
+    Complex search(1, 2); // 用以查找的复数
+    Rank foundI = A.find(search);
+    if (foundI != -1)
+    { cout << "找到元素 " << search << " 在索引 " << foundI << endl;}
     else
-    {cout << "未找到元素 " << searchComplex << endl;}
+    {cout << "未找到元素 " << search << endl;}
     // 测试插入
     A.insert(0, Complex(1, 2));
     cout << "插入元素 (1, 2) 后的复数向量:\n";
@@ -133,7 +119,7 @@ int main()
     cout << "唯一化后的复数向量:\n";
     A.traverse(print);cout << endl;
     // 排序
-    Sort1(A);
+    A.sort();
     cout << "排序后的复数向量:\n";
     A.traverse(print);cout << endl;
     // 测试区间查找
