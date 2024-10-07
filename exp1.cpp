@@ -81,21 +81,6 @@ Vector<Complex> generateRandomVector(int n)
     }
     return A;
 }
-Vector<Complex> generateOrderedVector(int n)
-{
-    Vector<Complex> A;
-    for (int i = 0; i < n; ++i)
-    {A.insert(static_cast<double>(i), static_cast<double>(i));}
-    return A;
-}
-// 生成逆序复数向量
-Vector<Complex> generateReverseOrderedVector(int n)
-{
-    Vector<Complex> A;
-    for (int i = n; i > 0; --i)
-    { A.insert(static_cast<double>(i), static_cast<double>(i));}
-    return A;
-}
 // 记录排序时间并输出结果
 void measureSortingTime(const string &sortType, Vector<Complex> A)
 {
@@ -111,8 +96,16 @@ void measureSortingTime(const string &sortType, Vector<Complex> A)
 int main()
 {
     // 1. 生成一个无序的复数向量
-    int n = 10;
-    Vector<Complex> A = generateRandomVector(n);
+    int n = 1000;
+    Vector<Complex> A= generateRandomVector(n);
+    Vector<Complex> A1 = A;//乱序数组A1
+    Vector<Complex> A2 = A;
+    Vector<Complex> A3 = A; // 逆序数组A3
+    Sort1(A2);//顺序数组A2
+    for (int i=n-1; i>=0; i--)
+    {
+        A3[n-i-1] = A2[i];
+    }
     cout << "无序复数向量:\n";
     A.traverse(print);
     cout << endl;
@@ -149,23 +142,20 @@ int main()
     Vector<Complex> foundInRange = findInRange(A, m1, m2);
     cout << "在区间 [" << m1 << ", " << m2 << "):的元素\n";
     foundInRange.traverse(print);cout<<endl;
+    // 测试乱序向量
+    cout << "乱序排序时间:" << endl;
+    Vector<Complex> A12 = A1;
+    measureSortingTime("起泡排序",A1);
+    measureSortingTime("归并排序", A12);
     // 测试顺序
     cout << "顺序排序时间:" << endl;
-    Vector<Complex> orderedVec = generateOrderedVector(n);
-    Vector<Complex> orderedVec1 = orderedVec;
-    measureSortingTime("起泡排序", orderedVec);
-    measureSortingTime("归并排序", orderedVec1);
-    // 测试乱序向量
-    cout << "\n乱序排序时间:" << endl;
-    Vector<Complex> randomVec = generateRandomVector(n);
-    Vector<Complex> randomVec1 = randomVec;
-    measureSortingTime("起泡排序", randomVec);
-    measureSortingTime("归并排序", randomVec1);
-    // // 测试逆序向量
-    cout << "\n逆序排序时间" << endl;
-    Vector<Complex> reverseVec = generateReverseOrderedVector(n);
-    Vector<Complex> reverseVec1 = reverseVec;
-    measureSortingTime("起泡排序", reverseVec);
-    measureSortingTime("归并排序", reverseVec1);
+    Vector<Complex> A22 = A2;
+    measureSortingTime("起泡排序", A2);
+    measureSortingTime("归并排序", A22);
+    // 测试逆序向量
+    cout << "逆序排序时间" << endl;
+    Vector<Complex> A32 = A3;
+    measureSortingTime("起泡排序", A3);
+    measureSortingTime("归并排序", A32);
     return 0;
  }
