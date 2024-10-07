@@ -82,7 +82,7 @@ void measureSortingTime(const string &sortType, Vector<Complex> A)
 int main()
 {
     // 1. 生成一个无序的复数向量
-    int n = 100;
+    int n = 1000;
     Vector<Complex> A= generateRandomVector(n);
     Vector<Complex> A1 = A;//乱序数组A1
     Vector<Complex> A2 = A;
