@@ -46,7 +46,7 @@ void Sort1(Vector<Complex> &arr)
     }
 }
 // 区间查找算法
-Vector<Complex> findInRange(const Vector<Complex> &arr, double m1, double m2)
+Vector<Complex> findM(const Vector<Complex> &arr, double m1, double m2)
 {
     Vector<Complex> result;
     for (int i = 0; i < arr.size(); ++i)
@@ -139,9 +139,9 @@ int main()
     // 测试区间查找
     double m1 = 3.0;  // 设置模的下界
     double m2 = 8.0; // 设置模的上界
-    Vector<Complex> foundInRange = findInRange(A, m1, m2);
+    Vector<Complex> foundN = findM(A2, m1, m2);
     cout << "在区间 [" << m1 << ", " << m2 << "):的元素\n";
-    foundInRange.traverse(print);cout<<endl;
+    foundN.traverse(print);cout<<endl;
     // 测试乱序向量
     cout << "乱序排序时间:" << endl;
     Vector<Complex> A12 = A1;
