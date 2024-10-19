@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cmath>
-#include "Vector.cpp"
+#include "../unite/Vector/Vector.cpp"
 #include <chrono>
 using namespace std;
 // 复数类定义
@@ -82,8 +82,9 @@ void measureSortingTime(const string &sortType, Vector<Complex> A)
 int main()
 {
     // 1. 生成一个无序的复数向量
-    int n = 1000;
+    int n = 10;
     Vector<Complex> A= generateRandomVector(n);
+    A.traverse(print);
     Vector<Complex> A1 = A;//乱序数组A1
     Vector<Complex> A2 = A;
     Vector<Complex> A3 = A; // 逆序数组A3

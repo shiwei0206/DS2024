@@ -1,4 +1,4 @@
-
+#include <initializer_list>
 
 typedef int Rank;		   // 秩
 #define DEFAULT_CAPACITY 3 // 默认的初始容量（实际应用中可设置为更大）
@@ -30,12 +30,13 @@ public:
 		for (_size = 0; _size < s; _elem[_size++] = v)
 			;
 	} // s <= c
+     Vector(std::initializer_list<T> list) {}
 	Vector(T const *A, Rank lo, Rank hi) { copyFrom(A, lo, hi); }				// 数组区间复制
 	Vector(T const *A, Rank n) { copyFrom(A, 0, n); }							// 数组整体复制
 	Vector(Vector<T> const &V, Rank lo, Rank hi) { copyFrom(V._elem, lo, hi); } // 向量区间复制
 	Vector(Vector<T> const &V) { copyFrom(V._elem, 0, V._size); }				// 向量整体复制
 	// 析构函数
-	~Vector() { delete[] _elem; } // 释放内部空间
+	// ~Vector() { delete[] _elem; } // 释放内部空间
 	// 只读访问接口
 	Rank size() const { return _size; }						  // 规模
 	bool empty() const { return !_size; }					  // 判空

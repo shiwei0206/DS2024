@@ -1,14 +1,39 @@
 #include <iostream>
-#include "stack.cpp"
-// #include "../unite/Vector/Vector.cpp"
+#include <stack>
 #include <string>
 #include <cmath>
+#include <vector>
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
 #include <limits>
 using namespace std;
-
+// 1. 实现栈数据结构
+template <typename T>
+class Stack
+{
+public:
+    void push(T value)
+    {s.push(value);}
+    T pop()
+    {
+        if (s.empty())
+            throw runtime_error("栈为空");
+        T topValue = s.top();
+        s.pop();
+        return topValue;
+    }
+    T top() const
+    {
+        if (s.empty())
+            throw runtime_error("栈为空");
+        return s.top();
+    }
+    bool is_empty() const
+    {return s.empty();}
+private:
+    stack<T> s;
+};
 //2. 基于优先级表实现的字符串计算器
 int precedence(char op)
 {
@@ -102,7 +127,7 @@ double three(const string &expression)
 // 3. 求柱状图中最大矩形面积
 int largestarea(const vector<int> &heights)
 {
-    Stack<int> st;
+    stack<int> st;
     int maxArea = 0;
     int n = heights.size();
     for (int i = 0; i < n; i++)
@@ -123,8 +148,6 @@ int largestarea(const vector<int> &heights)
     }
     return maxArea;
 }
-
-
 // 4. 随机生成测试数据
 void generatetest(int numTests)
 {
