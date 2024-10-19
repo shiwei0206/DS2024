@@ -1,6 +1,5 @@
 #include <iostream>
-#include "stack.cpp"
-// #include "../unite/Vector/Vector.cpp"
+#include "Stack.cpp"
 #include <string>
 #include <cmath>
 #include <cstdlib>
@@ -8,87 +7,100 @@
 #include <algorithm>
 #include <limits>
 using namespace std;
-
 //2. 基于优先级表实现的字符串计算器
-int precedence(char op)
-{
-    if (op == '+' || op == '-')return 1;
-    if (op == '*' || op == '/')return 2;
-    if (op == '^')return 3;
-    return 0;
-}
-double operation(double a, double b, char op)
-{
-    switch (op)
-    {
-    case '+': return a + b;
-    case '-': return a - b;
-    case '*': return a * b;
-    case '/':
-        if (b == 0)
-            throw runtime_error("除以零错误");
-        return a / b;
-    case '^': return pow(a, b);
-    default: return 0;
+#define N_OPTR 9 
+ typedef enum {ADD, SUB, MUL, DIV, POW, FAC, L_P, R_P, EOE} Operator; 
+ const char pri[N_OPTR][N_OPTR] = { 
+/* |-------------- 前运算符 --------------| */
+/* + - * / ^ ! ( ) \0 */
+ /* -- + */ '>', '>', '<', '<', '<', '<', '<', '>', '>',
+ /* | - */ '>', '>', '<', '<', '<', '<', '<', '>', '>',
+ /* 栈 * */ '>', '>', '>', '>', '<', '<', '<', '>', '>',
+ /* 顶 / */ '>', '>', '>', '>', '<', '<', '<', '>', '>',
+ /* 运 ^ */ '>', '>', '>', '>', '>', '<', '<', '>', '>',
+ /* 算 ! */ '>', '>', '>', '>', '>', '>', ' ', '>', '>',
+ /* 符 ( */ '<', '<', '<', '<', '<', '<', '<', '=', ' ',
+ /* | ) */ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+ /* -- \0 */ '<', '<', '<', '<', '<', '<', '<', ' ', '='
+ };
+
+Stack<double> numStack;  // 操作数栈
+Stack<char> opStack;      // 运算符栈
+double evaluate(double a, double b, char op) {
+    switch (op) {
+        case '+': return a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+        case '/':
+            if (b == 0) throw runtime_error("Division by zero");
+            return a / b;
+        case '^': return pow(a, b);
+        case '!': return tgamma(a + 1); 
+        default: throw runtime_error("Invalid operator");
     }
 }
-bool Number(char c)
-{return c >= '0' && c <= '9';}
-double evaluate(const string &expression)
-{
-    Stack<double> values; 
-    Stack<char> ops;     
-    for (size_t i = 0; i < expression.length(); i++)
-    {
-        if (isspace(expression[i]))
-            continue;
-        if (Number(expression[i]))
-        {
-            double value = 0;
-            while (i < expression.length() && (Number(expression[i]) || expression[i] == '.'))
-            {
-                if (expression[i] == '.')
-                {i++; double fraction = 1.0;
-                    while (i < expression.length() && Number(expression[i]))
-                    {
-                        fraction /= 10;
-                        value += (expression[i] - '0') * fraction; i++;
-                    }i--; 
-                }else
-                {value = (value * 10) + (expression[i] - '0');}
-                i++;
+int precedence(char op) {
+    switch (op) {
+        case '+': case '-': return 1;
+        case '*': case '/': return 2;
+        case '^': return 3;
+        case '!': return 4;
+        default: return 0;
+    }
+}
+bool isOperator(char c) {
+    return c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '!';
+}
+
+bool isNumber(char c) {
+    return isdigit(c) || c == '.';
+}
+
+double calculate(const string &expression) {
+    numStack = Stack<double>();
+    opStack = Stack<char>();
+    string numBuffer;
+
+    for (size_t i = 0; i < expression.size(); ++i) {
+        char c = expression[i];
+
+        if (isspace(c)) continue; 
+        if (isNumber(c)) {
+            numBuffer += c;  
+        } else {
+            if (!numBuffer.empty()) {
+                numStack.push(std::stod(numBuffer));  
+                numBuffer.clear();
             }
-            i--; values.push(value);
-        }
-        else if (expression[i] == '(')
-        { ops.push(expression[i]);}
-        else if (expression[i] == ')')
-        {
-            while (!ops.is_empty() && ops.top() != '(')
-            {
-                double val2 = values.pop();
-                double val1 = values.pop();
-                char op = ops.pop();
-                values.push(operation(val1, val2, op));
-            }ops.pop();
-        }else
-        {
-            while (!ops.is_empty() && precedence(ops.top()) >= precedence(expression[i]))
-            {
-                double val2 = values.pop();
-                double val1 = values.pop();
-                char op = ops.pop();
-                values.push(operation(val1, val2, op));
-            } ops.push(expression[i]);
+
+            if (isOperator(c)) {
+                while (!opStack.empty() && precedence(opStack.top()) >= precedence(c)) {
+                    double b = numStack.top(); numStack.pop();
+                    double a = numStack.top(); numStack.pop();
+                    char op = opStack.top(); opStack.pop();
+                    numStack.push(evaluate(a, b, op));
+                }opStack.push(c);
+            } else if (c == '(') { opStack.push(c);} 
+            else if (c == ')') {
+                while (opStack.top() != '(') {
+                    double b = numStack.top(); numStack.pop();
+                    double a = numStack.top(); numStack.pop();
+                    char op = opStack.top(); opStack.pop();
+                    numStack.push(evaluate(a, b, op));
+                }
+                opStack.pop();  
+            }
         }
     }
-    while (!ops.is_empty())
-    {
-        double val2 = values.pop();
-        double val1 = values.pop();
-        char op = ops.pop();
-        values.push(operation(val1, val2, op));
-    }return values.pop();
+
+    if (!numBuffer.empty()) {numStack.push(stod(numBuffer));}
+    while (!opStack.empty()) {
+        double b = numStack.top(); numStack.pop();
+        double a = numStack.top(); numStack.pop();
+        char op = opStack.top(); opStack.pop();
+        numStack.push(evaluate(a, b, op));
+    }
+   return numStack.top();
 }
 // 扩展: 支持三角函数和对数
 double three(const string &expression)
@@ -97,7 +109,6 @@ double three(const string &expression)
         size_t end = expression.find(')');
         double angle = stod(expression.substr(start + 1, end - start - 1));
         return sin(angle * M_PI / 180.0); // 将角度转换为弧度
-    return evaluate(expression);
 }
 // 3. 求柱状图中最大矩形面积
 int largestarea(const vector<int> &heights)
@@ -147,19 +158,22 @@ void generatetest(int numTests)
 }
 int main()
 {
-        // 字符串计算器示例测试
-        string A1 = "3 + 5 * 2 - 4.8";
-        string A2 = "sin(90)";
-        cout << "数字运算: " << A1 << " = " << evaluate(A1) << endl <<endl;
-        cout << "三角函数: " << A2 << " = " << three(A2) << endl << endl;
-        // 测试柱状图最大矩形面积
-        vector<int> B1 = {2, 1, 5, 6, 2, 3};
-        vector<int> B2 = {2, 4};
-        cout << "输入: " << "[2, 1, 5, 6, 2, 3]" << endl;
-        cout << "输出: " << largestarea(B1) << endl <<endl;
-        cout << "输入: " << "[2, 4]" << endl;
-        cout << "输出: " << largestarea(B2) << endl << endl;
-        // 随机生成 10 组测试数据
-        generatetest(10);
+    // 字符串计算器示例测试
+    // 字符串计算器示例测试
+    string A1 = {"3 + 3 * 2 - 8 / 2 + 3.2",};
+    cout << "数字运算: " << A1 << " = " << calculate(A1) << endl<<endl;
+    string A2 = {"( 3 + 4 ) * 5 -24"};
+    cout << "数字运算: " << A2 << " = " << calculate(A2)<<endl<<endl;
+    string A3 = {"sin(60)"};
+    cout << "数字运算: " << A3 << " = " << three(A3)<<endl;
+    // 测试柱状图最大矩形面积
+    vector<int> B1 = {2, 1, 5, 6, 2, 3};
+    vector<int> B2 = {2, 4};
+    cout << "输入: " << "[2, 1, 5, 6, 2, 3]" << endl;
+    cout << "输出: " << largestarea(B1) << endl <<endl;
+    cout << "输入: " << "[2, 4]" << endl;
+    cout << "输出: " << largestarea(B2) << endl << endl;
+    // 随机生成 10 组测试数据
+    generatetest(10);
     return 0;
 }
