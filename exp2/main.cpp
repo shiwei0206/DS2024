@@ -109,8 +109,10 @@ double three(const string &expression)
         size_t end = expression.find(')');
         double angle = stod(expression.substr(start + 1, end - start - 1));
         return sin(angle * M_PI / 180.0); // 将角度转换为弧度
+        return calculate(expression);
 }
 // 3. 求柱状图中最大矩形面积
+
 int largestarea(const vector<int> &heights)
 {
     Stack<int> st;
@@ -164,8 +166,8 @@ int main()
     cout << "数字运算: " << A1 << " = " << calculate(A1) << endl<<endl;
     string A2 = {"( 3 + 4 ) * 5 -24"};
     cout << "数字运算: " << A2 << " = " << calculate(A2)<<endl<<endl;
-    string A3 = {"sin(60)"};
-    cout << "数字运算: " << A3 << " = " << three(A3)<<endl;
+    string A3 = {"sin(30)"};
+    cout << "数字运算: " << A3 << " = " << three(A3) << endl<< endl;
     // 测试柱状图最大矩形面积
     vector<int> B1 = {2, 1, 5, 6, 2, 3};
     vector<int> B2 = {2, 4};
