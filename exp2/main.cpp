@@ -17,7 +17,6 @@ using namespace std;
  /* | ) */ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
  /* -- \0 */ '<', '<', '<', '<', '<', '<', '<', ' ', '='
  };
-
 Stack<double> numStack;  // 操作数栈
 Stack<char> opStack;      // 运算符栈
 double evaluate(double a, double b, char op) {
@@ -45,19 +44,13 @@ int precedence(char op) {
 bool isOperator(char c) {
     return c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '!';
 }
-
-bool isNumber(char c) {
-    return isdigit(c) || c == '.';
-}
-
+bool isNumber(char c) {return isdigit(c) || c == '.';}
 double calculate(const string &expression) {
     numStack = Stack<double>();
     opStack = Stack<char>();
     string numBuffer;
-
     for (size_t i = 0; i < expression.size(); ++i) {
         char c = expression[i];
-
         if (isspace(c)) continue; 
         if (isNumber(c)) {
             numBuffer += c;  
@@ -66,7 +59,6 @@ double calculate(const string &expression) {
                 numStack.push(std::stod(numBuffer));  
                 numBuffer.clear();
             }
-
             if (isOperator(c)) {
                 while (!opStack.empty() && precedence(opStack.top()) >= precedence(c)) {
                     double b = numStack.top(); numStack.pop();
@@ -81,12 +73,10 @@ double calculate(const string &expression) {
                     double a = numStack.top(); numStack.pop();
                     char op = opStack.top(); opStack.pop();
                     numStack.push(evaluate(a, b, op));
-                }
-                opStack.pop();  
+                }opStack.pop();  
             }
         }
     }
-
     if (!numBuffer.empty()) {numStack.push(stod(numBuffer));}
     while (!opStack.empty()) {
         double b = numStack.top(); numStack.pop();
@@ -96,7 +86,7 @@ double calculate(const string &expression) {
     }
    return numStack.top();
 }
-// 扩展: 支持三角函数和对数
+//三角函数
 double three(const string &expression)
 {
         size_t start = expression.find('(');
@@ -126,8 +116,7 @@ int largestarea(const vector<int> &heights)
         st.pop();
         int width = st.empty() ? n : n - st.top() - 1;
         maxArea = max(maxArea, h * width);
-    }
-    return maxArea;
+    }return maxArea;
 }
 
 
@@ -147,13 +136,11 @@ void generatetest(int numTests)
         }
         cout << "]" << endl;
         int maxArea = largestarea(heights);
-        cout << "输出: " << maxArea << endl
-                  << endl;
+        cout << "输出: " << maxArea << endl << endl;
     }
 }
 int main()
 {
-    // 字符串计算器示例测试
     // 字符串计算器示例测试
     string A1 = {"3 + 3 * 2 - 8 / 2 + 3.2",};
     cout << "数字运算: " << A1 << " = " << calculate(A1) << endl<<endl;
