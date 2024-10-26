@@ -1,11 +1,5 @@
 #include <iostream>
 #include "Stack.cpp"
-#include <string>
-#include <cmath>
-#include <cstdlib>
-#include <ctime>
-#include <algorithm>
-#include <limits>
 using namespace std;
 //2. 基于优先级表实现的字符串计算器
 #define N_OPTR 9 
@@ -112,7 +106,6 @@ double three(const string &expression)
         return calculate(expression);
 }
 // 3. 求柱状图中最大矩形面积
-
 int largestarea(const vector<int> &heights)
 {
     Stack<int> st;
@@ -166,7 +159,7 @@ int main()
     cout << "数字运算: " << A1 << " = " << calculate(A1) << endl<<endl;
     string A2 = {"( 3 + 4 ) * 5 -24"};
     cout << "数字运算: " << A2 << " = " << calculate(A2)<<endl<<endl;
-    string A3 = {"sin(30)"};
+    string A3 = {"sin(60)"};
     cout << "数字运算: " << A3 << " = " << three(A3) << endl<< endl;
     // 测试柱状图最大矩形面积
     vector<int> B1 = {2, 1, 5, 6, 2, 3};
