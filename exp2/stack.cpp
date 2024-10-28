@@ -1,10 +1,5 @@
 #include "../unite/Vector/Vector.cpp" 
-#include <string>
-#include <cmath>
-#include <cstdlib>
-#include <ctime>
-#include <algorithm>
-#include <limits>
+
 template <typename T>
 class Stack : public Vector<T> {
 public:

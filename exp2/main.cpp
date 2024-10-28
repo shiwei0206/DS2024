@@ -1,5 +1,11 @@
 #include <iostream>
 #include "Stack.cpp"
+#include <string>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+#include <algorithm>
+#include <limits>
 using namespace std;
 //2. 基于优先级表实现的字符串计算器
 #define N_OPTR 9 
