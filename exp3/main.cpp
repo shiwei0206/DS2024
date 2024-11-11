@@ -111,6 +111,7 @@ public:
     }
     // 打印霍夫曼编码
     void printCodes(HuffCode codeTable[], int n) {
+        cout << "字母编码：\n";
         for (int i = 0; i < n; i++) {
             if (forest.size() > 0) {
                 for (auto node : forest) {
@@ -140,7 +141,7 @@ public:
 // encodeWord 函数：将指定的单词编码并输出。
 // word 为要编码的单词，codeTable 为霍夫曼编码表，n 为字符数。
 void encodeWord(const string& word, HuffCode codeTable[], int n) {
-    cout << "编码 " << word << " : ";
+    cout << "单词编码 " << word << " : ";
     for (char c : word) {
         if (isalpha(c)) {
             HuffCode& code = codeTable[tolower(c) - 'a'];
