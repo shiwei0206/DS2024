@@ -66,6 +66,10 @@
         "xmemory": "cpp",
         "xtr1common": "cpp",
         "queue": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "bitset": "cpp",
+        "functional": "cpp",
+        "set": "cpp",
+        "xtree": "cpp"
     }
 }
